@@ -1,11 +1,49 @@
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
 import './App.css'
 import money from './img/money.png'
+import axios from 'axios';
+
+
 
 function App() {
-  // const [count, setCount] = useState(0)
+
+    const currency_one = document.getElementById('currency-one');
+    const currency_two = document.getElementById('currency-two');
+
+    // const amount_one = document.getElementById('amount-one');
+    // const amount_two = document.getElementById('amount-two');
+
+    const rateText = document.getElementById('rate'); // rateที่แสดงค่าเป็นตัวอักษร
+    const swap = document.getElementById('btn');
+    
+
+    //currency_one.addEventListener('change',calculateMoney);
+    //currency_two.addEventListener('change',calculateMoney);
+
+    
+    async function calculateMoneyUpper(upper) {
+        // console.log(upper);
+        // console.log(upper.target.value);
+        const inputUpper = upper.target.value;
+
+        console.log("สกุลเงินต้นทาง = " ,inputUpper);
+        let url= `http://api.exchangeratesapi.io/v1/latest?access_key=30c007634568e5f6e93a00a597fd556a&symbols=${inputUpper}`;
+        console.log(url);
+        const response = await axios.get(url)
+        const responseRate = response.rates.inputUpper;
+        console.log(responseRate);
+     }
+
+     async function calculateMoneyLower(lower) {
+        console.log(lower.target.value);
+        
+        const inputLower = lower.target.value;
+
+        console.log("สกุลเงินปลายทาง = ",inputLower);
+        let url= `http://api.exchangeratesapi.io/v1/latest?access_key=30c007634568e5f6e93a00a597fd556a&symbols=${inputLower}`;
+        const response = await axios.get(url)
+        console.log(response);
+     }
+    
 
   return (
     <>
@@ -13,7 +51,7 @@ function App() {
     <h1>Exchange Rate Program</h1>
     <div className="container">
         <div className="currency">
-            <select name="" id="currency-one">
+            <select onChange={(upper)=>{calculateMoneyUpper(upper)}} name="" id="currency-one">
                 <option value="AED">AED</option>
                 <option value="ARS">ARS</option>
                 <option value="AUD">AUD</option>
@@ -76,7 +114,7 @@ function App() {
             <div className="rate" id="rate">rate exchange...</div>
         </div>
         <div className="currency">
-            <select name="" id="currency-two">
+            <select onChange={(lower)=>{calculateMoneyLower(lower)}} name="" id="currency-two">
                 <option value="AED">AED</option>
                 <option value="ARS">ARS</option>
                 <option value="AUD">AUD</option>
